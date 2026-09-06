@@ -1,1 +1,74 @@
-<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>简填自动填写测试</title><body><h1>模拟网申表单</h1><div class="form-row"><label for="applicant">姓名</label><input id="applicant"></div><div class="form-row"><span id="schoolLabel">毕业院校</span><input aria-labelledby="schoolLabel"></div><div class="form-row"><label>政治面貌 <select id="political"><option>请选择</option><option>中共党员</option><option>共青团员</option></select></label></div><div class="form-row"><label for="phone">联系电话</label><input id="phone"></div><div class="form-row"><label for="project">项目经历</label><textarea id="project"></textarea></div><button id="run">运行自动填写测试</button><p id="result"></p><script src="../fill.js"></script><script>document.querySelector('#run').onclick=()=>{const n=JobFill.fillPage({name:'测试同学',school:'测试大学',politicalStatus:'中共党员',phone:'13800138000',projects:'项目 A：自动填充测试'});document.querySelector('#result').textContent=`已填充 ${n} 个字段｜${document.querySelector('#applicant').value}｜${document.querySelector('#political').value}`}</script></body></html>
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><title>简填自动填写测试</title>
+<style>body{font-family:'Microsoft YaHei',sans-serif;margin:24px}.row{margin:8px 0}.form-item{display:flex;align-items:center;gap:8px;margin:10px 0}.el-form-item__label{width:90px;text-align:right}.hidden{display:none}input,select,textarea{min-width:200px}.ok{color:#0a7d32}.bad{color:#c0392b}</style>
+<body>
+<h1>模拟网申表单（本地规则模式）</h1>
+<div class="form-item"><label class="el-form-item__label">姓名</label><input id="applicant"></div>
+<table><tr><td>毕业院校</td><td><input aria-labelledby="schoolLabel" id="schoolBox"></td></tr><tr><td id="schoolLabel">院校名称</td><td><input id="schoolAlt"></td></tr></table>
+<div class="form-item"><label>政治面貌</label><select id="political"><option value="">请选择</option><option>中共党员</option><option>共青团员</option></select></div>
+<div class="form-item"><label for="phone">联系电话</label><input id="phone"></div>
+<div class="form-item"><label for="email">电子邮箱</label><input id="email"></div>
+<div class="form-item"><label for="residence">现居住地</label><input id="residence"></div>
+<div class="form-item"><label for="birthPlace">生源地</label><input id="birthPlace"></div>
+<div class="form-item"><label for="major">专业</label><input id="major"></div>
+<div class="form-item"><label for="projectName">项目名称</label><input id="projectName" placeholder="不应填入整段项目经历"></div>
+<div class="form-item"><label for="project">项目经历</label><textarea id="project" rows="3"></textarea></div>
+<div class="form-item"><label for="awards">获奖情况</label><textarea id="awards" rows="2"></textarea></div>
+<div class="form-item"><label for="campus">校内经历</label><textarea id="campus" rows="2"></textarea></div>
+<div class="form-item"><label for="cert">证书</label><textarea id="cert" rows="2"></textarea></div>
+<div class="form-item"><label for="skills">技能特长</label><textarea id="skills" rows="2"></textarea></div>
+<div class="form-item"><label>隐藏姓名</label><input id="hiddenName" class="hidden" value=""></div>
+<div class="form-item"><label>禁用邮箱</label><input id="disabledEmail" disabled value=""></div>
+<div class="form-item"><label>已填电话</label><input id="preFilled" value="已存在内容不应覆盖"></div>
+<div class="form-item"><label>自我介绍（可编辑）</label><div contenteditable="true" id="summary"></div></div>
+<button id="run">运行自动填写测试</button>
+<p id="result"></p>
+<script src="../fill.js"></script>
+<script>
+const profile = {
+  name: '测试同学',
+  politicalStatus: '中共党员',
+  school: '测试大学',
+  major: '计算机科学与技术',
+  education: '本科',
+  birthPlace: '山东青岛',
+  residence: '北京市海淀区',
+  phone: '13800138000',
+  email: 'test@example.com',
+  projects: '项目 A：自动填写测试\n项目 B：字段语义匹配',
+  awards: '全国大学生数学建模竞赛省一等奖',
+  campus: '学生会宣传部部长',
+  certificates: '大学英语六级（CET-6）',
+  skills: 'Python / JavaScript / Vue'
+};
+const assertions = [];
+document.querySelector('#run').onclick = async () => {
+  const summary = document.querySelector('#summary');
+  summary.textContent = '';
+  const r = await JobFill.fillPage(profile, { aiEnabled: false });
+  const val = (id) => document.querySelector(id).value;
+  const expect = (id, expected, label) => {
+    const got = document.querySelector(id).value;
+    const good = String(expected) === String(got);
+    assertions.push(`<div class="${good ? 'ok' : 'bad'}">${label}：${good ? '通过' : '失败'}（${got || '(空)'}）</div>`);
+  };
+  expect('#applicant', profile.name, '姓名');
+  expect('#schoolBox', profile.school, '院校');
+  expect('#political', '中共党员', '政治面貌 select');
+  expect('#phone', profile.phone, '联系电话');
+  expect('#email', profile.email, '邮箱');
+  expect('#residence', profile.residence, '现居住地');
+  expect('#birthPlace', profile.birthPlace, '生源地');
+  expect('#major', profile.major, '专业');
+  expect('#projectName', '', '项目名称（不应被填整段）');
+  expect('#project', profile.projects, '项目经历 textarea');
+  expect('#awards', profile.awards, '获奖情况');
+  expect('#campus', profile.campus, '校内经历');
+  expect('#cert', profile.certificates, '证书');
+  expect('#skills', profile.skills, '技能特长');
+  expect('#hiddenName', '', '隐藏字段（跳过）');
+  expect('#disabledEmail', '', '禁用字段（跳过）');
+  expect('#preFilled', '已存在内容不应覆盖', '已填字段（不覆盖）');
+  document.querySelector('#result').innerHTML = `<b>fillPage 返回：filled=${r.filled} / total=${r.total}，aiUsed=${r.aiUsed}</b>` + assertions.join('');
+};
+</script>
+</body></html>

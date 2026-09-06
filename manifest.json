@@ -1,10 +1,15 @@
 {
   "manifest_version": 3,
   "name": "简填 · 网申助手",
-  "version": "1.2.1",
-  "description": "本地管理简历信息，辅助填写招聘网站表单。",
+  "version": "2.0.0",
+  "description": "Word简历导入解析 + AI识别网申字段，辅助一键填写招聘表单。",
   "permissions": ["storage", "activeTab", "scripting"],
-  "host_permissions": ["http://*/*", "https://*/*"],
+  "host_permissions": ["http://*/*", "https://*/*", "https://api.deepseek.com/*"],
+  "background": { "service_worker": "background.js" },
   "action": { "default_title": "打开简填", "default_popup": "popup.html" },
-  "options_page": "options.html"
+  "options_page": "options.html",
+  "web_accessible_resources": [{
+    "resources": ["fill.js", "vendor/*"],
+    "matches": ["http://*/*", "https://*/*"]
+  }]
 }

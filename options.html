@@ -1,1 +1,51 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>简填 · 我的资料</title><link rel="stylesheet" href="options.css"></head><body><main class="page"><header><div class="brand"><img src="icon.svg"><div><strong>简填</strong><span>PROFILE STUDIO</span></div></div><div class="actions"><button id="save" class="primary">保存资料</button></div></header><div class="intro"><div><div class="eyebrow">YOUR APPLICATION KIT</div><h1>一份资料，<em>多次复用。</em></h1><p>手动维护资料库；在网申页面点击插件即可自动填充或复制单个字段。</p></div><div class="privacy">◎ 仅保存在本机<br><small>不会上传到服务器</small></div></div><form id="form"><section><div class="section-title"><span>01</span><h2>基础信息</h2></div><div class="form-grid" id="basic"></div></section><section><div class="section-title"><span>02</span><h2>经历与能力</h2></div><div class="form-grid" id="experience"></div></section></form><footer>简填 v1.2.1 · 支持 Chrome / Edge · 自动填充前请检查内容</footer></main><script src="storage.js"></script><script src="options.js"></script></body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>简填 · 我的资料</title>
+<link rel="stylesheet" href="options.css">
+</head>
+<body>
+<main class="page">
+  <header>
+    <div class="brand"><img src="icon.svg" alt=""><div><strong>简填</strong><span>PROFILE STUDIO</span></div></div>
+    <div class="actions">
+      <label class="upload">↑ 导入 Word 简历<input id="resumeFile" type="file" accept=".docx,.txt"></label>
+      <button id="save" class="primary">保存资料</button>
+    </div>
+  </header>
+
+  <div class="intro">
+    <div>
+      <div class="eyebrow">YOUR APPLICATION KIT</div>
+      <h1>一份资料，<em>多次复用。</em></h1>
+      <p>导入 Word 简历或手动填写；开启 AI 后可识别更复杂的网申字段。</p>
+    </div>
+    <div class="privacy">资料默认保存在本机<br><small>AI 开启时才会把简历/页面信息发送到 DeepSeek</small></div>
+  </div>
+
+  <div id="status" class="hint hidden"></div>
+
+  <section class="settings-box">
+    <div class="section-title"><span>AI</span><h2>DeepSeek 智能识别</h2></div>
+    <div class="settings-grid">
+      <label class="field"><input id="aiEnabled" type="checkbox"><b>启用 AI 解析与字段匹配</b><small>推荐：识别率明显更高</small></label>
+      <div class="field"><label for="aiKey">API Key</label><input id="aiKey" type="password" placeholder="sk-..."></div>
+      <div class="field"><label for="aiModel">模型</label><input id="aiModel" type="text" value="deepseek-v4-pro"></div>
+    </div>
+  </section>
+
+  <form id="form">
+    <section><div class="section-title"><span>01</span><h2>基础信息</h2></div><div class="form-grid" id="basic"></div></section>
+    <section><div class="section-title"><span>02</span><h2>经历与能力</h2></div><div class="form-grid" id="experience"></div></section>
+  </form>
+
+  <footer>简填 v2.0.0 · 支持 Chrome / Edge · 提交前请逐项检查</footer>
+</main>
+<script src="storage.js"></script>
+<script src="vendor/jszip.min.js"></script>
+<script src="vendor/mammoth.browser.min.js"></script>
+<script src="options.js"></script>
+</body>
+</html>
