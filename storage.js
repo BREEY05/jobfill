@@ -1,8 +1,10 @@
 const DEFAULT_PROFILE = {
   name: '', politicalStatus: '', school: '', major: '', education: '',
   birthPlace: '', residence: '', phone: '', email: '',
+ projects: '', awards: '', campus: '', certificates: '', skills: '',
+ resumeText: '', resumeName: '', updatedAt: ''
   projects: '', awards: '', campus: '', certificates: '', skills: '',
-  resumeText: '', resumeName: '', updatedAt: ''
+  updatedAt: ''
 };
 
 async function getProfile() {
