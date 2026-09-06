@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "简填 · 网申助手",
+  "version": "1.1.0",
+  "description": "本地管理简历信息，辅助填写招聘网站表单。",
+  "permissions": ["storage", "activeTab", "scripting"],
+  "action": { "default_title": "打开简填", "default_popup": "popup.html" },
+  "options_page": "options.html",
+  "content_scripts": [{
+    "matches": ["http://*/*", "https://*/*"],
+    "js": ["content.js"],
+    "css": ["content.css"],
+    "all_frames": true,
+    "run_at": "document_idle"
+  }]
+}
