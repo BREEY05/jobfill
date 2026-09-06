@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "简填 · 网申助手",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "本地管理简历信息，辅助填写招聘网站表单。",
   "permissions": ["storage", "activeTab", "scripting"],
   "host_permissions": ["http://*/*", "https://*/*"],
